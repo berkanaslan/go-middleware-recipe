@@ -1,8 +1,12 @@
 package config
 
+type Profile string
+
 const (
-	Local = "local"
-	Test  = "test"
+	Local Profile = "local"
+	Test  Profile = "test"
 )
 
-var Profiles = []string{Local, Test}
+var Profiles = []Profile{Local, Test}
+
+var ActiveProfile Profile

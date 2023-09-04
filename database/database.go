@@ -1,6 +1,7 @@
 package database
 
 import (
+	"go-middleware-recipe/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -22,7 +23,6 @@ func ConnectDatabase() {
 
 	log.Println("Connected to database successfully.")
 
-	// TODO: BA
-	//	db.AutoMigrate(&models.Book{})
+	_ = db.AutoMigrate(&models.User{})
 	DBConn = db
 }
