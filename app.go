@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	checkAppProfile()
+	checkApplicationProfile()
 
 	database.ConnectDatabase()
 
@@ -23,29 +23,33 @@ func main() {
 		return c.SendStatus(404)
 	})
 
-	log.Fatal(app.Listen(":8080"))
+	_ = app.Listen(":8080")
 }
 
-func checkAppProfile() {
+func checkApplicationProfile() {
 	if len(os.Args) != 2 {
 		fmt.Println("Usage: ./your_app <profile>")
 		os.Exit(1)
 	}
 
-	profile := os.Args[1]
+	profile := config.Profile(os.Args[1])
 
 	switch profile {
 	case config.Local, config.Test:
-		if err := loadProfileEnvironments(profile); err != nil {
+		err := loadProfileEnvironments(profile)
+
+		if err != nil {
 			log.Fatalf("Error loading .env file: %v", err)
 		}
+
+		config.ActiveProfile = profile
 	default:
 		fmt.Println("Invalid profile. Available profiles: ", config.Profiles)
 		os.Exit(1)
 	}
 }
 
-func loadProfileEnvironments(profile string) error {
+func loadProfileEnvironments(profile config.Profile) error {
 	envFile := fmt.Sprintf("config/%s.env", profile)
 	return godotenv.Load(envFile)
 }
