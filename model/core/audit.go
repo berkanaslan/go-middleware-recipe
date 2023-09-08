@@ -1,4 +1,4 @@
-package base
+package core
 
 import (
 	"gorm.io/gorm"
@@ -6,10 +6,10 @@ import (
 )
 
 type Audit struct {
-	CreatedAt time.Time
-	CreatedBy uint `json:"created_by"`
-	UpdatedAt time.Time
-	UpdatedBy uint `json:"updated_by"`
+	CreatedAt time.Time `json:"created_at"`
+	CreatedBy uint      `json:"created_by"`
+	UpdatedAt time.Time `json:"updated_at"`
+	UpdatedBy uint      `json:"updated_by"`
 }
 
 func (a *Audit) BeforeCreate(*gorm.DB) (err error) {
@@ -20,7 +20,6 @@ func (a *Audit) BeforeCreate(*gorm.DB) (err error) {
 }
 
 func (a *Audit) BeforeUpdate(*gorm.DB) (err error) {
-	// Set UpdatedAt to the current time
 	a.UpdatedAt = time.Now()
 	return nil
 }

@@ -1,7 +1,7 @@
 package database
 
 import (
-	"go-middleware-recipe/models"
+	"go-middleware-recipe/model/core"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -13,16 +13,17 @@ var (
 )
 
 func ConnectDatabase() {
-	dsn := "root:root@tcp(127.0.0.1:33060)/go_middleware_recipe?charset=utf8mb4&parseTime=True&loc=Local"
+
+	dsn := os.Getenv("DATABASE_URL")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		log.Fatal("Failed to connect to database. \n", err)
+		log.Println("Failed to connect to database. \n", err)
 		os.Exit(2)
 	}
 
 	log.Println("Connected to database successfully.")
 
-	_ = db.AutoMigrate(&models.User{})
+	_ = db.AutoMigrate(&core.User{})
 	DBConn = db
 }
