@@ -13,7 +13,6 @@ var (
 )
 
 func ConnectDatabase() {
-
 	dsn := os.Getenv("DATABASE_URL")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 

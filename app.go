@@ -6,9 +6,9 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 	"go-middleware-recipe/config"
+	"go-middleware-recipe/controller"
 	"go-middleware-recipe/database"
 	"go-middleware-recipe/model/core"
-	"go-middleware-recipe/repository"
 	"log"
 	"os"
 )
@@ -21,42 +21,8 @@ func main() {
 	app := fiber.New()
 	app.Use(cors.New())
 
-	app.Get("/user", func(c *fiber.Ctx) error {
-		userRepository := repository.Impl[core.User]{}
-
-		user := core.User{Email: "hello@berkan.io"}
-		user, err := userRepository.Create(user)
-
-		err = user.SetPassword("123456")
-
-		if err != nil {
-			return err
-		}
-
-		if err != nil {
-			return c.Status(500).JSON(fiber.Error{Code: 500, Message: err.Error()})
-		}
-
-		return c.JSON(user)
-	})
-
-	app.Get("/user/:id", func(c *fiber.Ctx) error {
-		userId, err := c.ParamsInt("id")
-
-		userRepository := &repository.Impl[core.User]{}
-
-		if err != nil {
-			return c.Status(400).JSON(fiber.Error{Code: 400, Message: "Invalid user id"})
-		}
-
-		user, err := userRepository.Read(userId)
-
-		if err != nil {
-			return c.Status(500).JSON(fiber.Error{Code: 500, Message: err.Error()})
-		}
-
-		return c.JSON(user)
-	})
+	c := controller.Impl[core.User]{Path: "/user"}
+	c.RegisterAll(app)
 
 	if err := app.Listen(":8080"); err != nil {
 		panic("Error starting the server")

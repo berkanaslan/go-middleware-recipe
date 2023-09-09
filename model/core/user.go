@@ -5,8 +5,8 @@ import "golang.org/x/crypto/bcrypt"
 type User struct {
 	ID uint `json:"id" gorm:"primary_key"`
 	Audit
-	Email    string `json:"email" gorm:"type:varchar(255);unique;not null"`
-	Password `json:"password" gorm:"type:varchar(255);not null"`
+	Email    string   `json:"email" gorm:"type:varchar(255);unique;not null"`
+	Password Password `json:"-" gorm:"type:varchar(255);not null"`
 	UserRole UserRole `json:"user_role" gorm:"type:varchar(255);not null;default:'user'"`
 	Enabled  bool     `json:"enabled" gorm:"index;default:true"`
 }

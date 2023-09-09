@@ -37,6 +37,6 @@ func (r *Impl[T]) Update(data T) error {
 }
 
 func (r *Impl[T]) Delete(id int) error {
-	fmt.Println("RepositoryImpl Update")
+	fmt.Println("RepositoryImpl Delete")
 	return nil
 }
