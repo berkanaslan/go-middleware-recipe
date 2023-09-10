@@ -8,7 +8,7 @@
             <requestState>
               <option name="body">
                 <bodyState>
-                  <option name="raw" value="{&#10;  &quot;email&quot;: &quot;2be3rkakn2&quot;,&#10;  &quot;Password&quot;: &quot;demoString&quot;,&#10;  &quot;enabled&quot;: false&#10;}" />
+                  <option name="raw" value="{&#10;  &quot;identity&quot;: &quot;ender&quot;,&#10;  &quot;password&quot;: &quot;ender&quot;&#10;}" />
                   <option name="type" value="JSON" />
                 </bodyState>
               </option>
@@ -21,9 +21,9 @@
                 </list>
               </option>
               <option name="id" value="ee1220bb-84c3-4cf8-9501-096053b148c1" />
-              <option name="method" value="POST" />
+              <option name="method" value="GET" />
               <option name="name" value="Draft" />
-              <option name="url" value="http://localhost:8080/user" />
+              <option name="url" value="http://localhost:8080/user/32" />
             </requestState>
           </list>
         </option>

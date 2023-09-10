@@ -1,16 +1,17 @@
-package controller
+package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"go-middleware-recipe/middleware"
 	"go-middleware-recipe/repository"
 )
 
-type BaseEntityController[T any] interface {
+type BaseEntityHandler[T any] interface {
 	RegisterAll(app *fiber.App)
-	Create(app *fiber.App)
-	Read(app *fiber.App)
-	Update(app *fiber.App)
-	Delete(app *fiber.App)
+	Create(app fiber.Router)
+	Read(app fiber.Router)
+	Update(app fiber.Router)
+	Delete(app fiber.Router)
 }
 
 type Impl[T any] struct {
@@ -18,12 +19,14 @@ type Impl[T any] struct {
 }
 
 func (c *Impl[T]) RegisterAll(app *fiber.App) {
-	c.Create(app)
-	c.Read(app)
+	userRoute := app.Group(c.Path, middleware.Protected())
+
+	c.Create(userRoute)
+	c.Read(userRoute)
 }
 
-func (c *Impl[T]) Create(app *fiber.App) {
-	app.Post(c.Path, func(ctx *fiber.Ctx) error {
+func (c *Impl[T]) Create(app fiber.Router) {
+	app.Post("/", func(ctx *fiber.Ctx) error {
 		var requestBody T
 
 		if err := ctx.BodyParser(&requestBody); err != nil {
@@ -41,8 +44,8 @@ func (c *Impl[T]) Create(app *fiber.App) {
 	})
 }
 
-func (c *Impl[T]) Read(app *fiber.App) {
-	app.Get(c.Path+"/:id", func(c *fiber.Ctx) error {
+func (c *Impl[T]) Read(app fiber.Router) {
+	app.Get("/:id", func(c *fiber.Ctx) error {
 		idParam, err := c.ParamsInt("id")
 
 		if err != nil {
