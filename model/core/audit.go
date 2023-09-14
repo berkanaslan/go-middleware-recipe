@@ -16,6 +16,7 @@ func (a *Audit) BeforeCreate(*gorm.DB) (err error) {
 	currentTime := time.Now()
 	a.CreatedAt = currentTime
 	a.UpdatedAt = currentTime
+
 	return nil
 }
 

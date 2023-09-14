@@ -32,7 +32,7 @@ func (u *User) SetPassword(password string) error {
 	return nil
 }
 
-func (u *User) CheckPasswordHash(password string) bool {
+func (u *User) IsPasswordValid(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
 	return err == nil
 }

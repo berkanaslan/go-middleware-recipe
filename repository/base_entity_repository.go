@@ -10,6 +10,7 @@ type Repository[T any] interface {
 	Read(id int) (T, error)
 	Update(data T) error
 	Delete(id int) error
+	Count() (int64, error)
 }
 
 type Impl[T any] struct {
@@ -39,4 +40,12 @@ func (r *Impl[T]) Update(data T) error {
 func (r *Impl[T]) Delete(id int) error {
 	fmt.Println("RepositoryImpl Delete")
 	return nil
+}
+
+func (r *Impl[T]) Count() (int64, error) {
+	// TODO: Is there really really no way to do this without creating an instance of T?
+	var entity T
+	var count int64
+	tx := database.DBConn.Model(entity).Count(&count)
+	return count, tx.Error
 }

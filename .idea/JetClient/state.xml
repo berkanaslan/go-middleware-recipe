@@ -6,9 +6,19 @@
         <option name="requests">
           <list>
             <requestState>
+              <option name="auth">
+                <authState>
+                  <option name="bearer">
+                    <iK>
+                      <option name="token" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AbG9jYWxob3N0IiwiZXhwIjoxNjk0OTkzMzEzLCJ1c2VyX2lkIjoxfQ.0_JjzK94u-_dYgaHWpNBpr-uCDbGiJs5iqC4F5ihJoQ" />
+                    </iK>
+                  </option>
+                  <option name="type" value="BEARER" />
+                </authState>
+              </option>
               <option name="body">
                 <bodyState>
-                  <option name="raw" value="{&#10;  &quot;identity&quot;: &quot;ender&quot;,&#10;  &quot;password&quot;: &quot;ender&quot;&#10;}" />
+                  <option name="raw" value="{&#10;  &quot;identity&quot;: &quot;superadmin@localhost&quot;,&#10;  &quot;password&quot;: &quot;password&quot;&#10;}" />
                   <option name="type" value="JSON" />
                 </bodyState>
               </option>
@@ -23,7 +33,7 @@
               <option name="id" value="ee1220bb-84c3-4cf8-9501-096053b148c1" />
               <option name="method" value="GET" />
               <option name="name" value="Draft" />
-              <option name="url" value="http://localhost:8080/user/32" />
+              <option name="url" value="http://localhost:8080/user/1" />
             </requestState>
           </list>
         </option>
