@@ -3,6 +3,8 @@ package handler
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
+	"go-middleware-recipe/model/core"
+	"go-middleware-recipe/repository"
 	"os"
 	"time"
 )
@@ -22,17 +24,18 @@ func Login(c *fiber.Ctx) error {
 	identity := input.Identity
 	pass := input.Password
 
-	// TODO: User repository and service to get user by identity
+	userRepository := repository.NewUserRepository()
+	user, err := userRepository.FindByEmail(identity)
 
-	if identity != "ender" || pass != "ender" {
-		return c.SendStatus(fiber.StatusUnauthorized)
+	if err != nil {
+		return c.JSON(fiber.Error{Code: fiber.StatusUnauthorized, Message: "Invalid user"})
 	}
 
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
-	claims["identity"] = identity
-	claims["admin"] = true
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	if !user.IsPasswordValid(pass) {
+		return c.JSON(fiber.Error{Code: fiber.StatusUnauthorized, Message: "Invalid password"})
+	}
+
+	token := generateJWT(user)
 
 	t, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 
@@ -40,6 +43,15 @@ func Login(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	// TODO: Return user and add token to the response header
-	return c.JSON(fiber.Map{"status": "success", "message": "Success login", "data": t})
+	c.Set("X-Auth-Token", t)
+	return c.JSON(user)
+}
+
+func generateJWT(user core.User) *jwt.Token {
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+	claims["user_id"] = user.ID
+	claims["email"] = user.Email
+	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	return token
 }
