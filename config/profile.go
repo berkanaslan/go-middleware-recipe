@@ -1,6 +1,7 @@
 package config
 
 import (
+	"flag"
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
@@ -16,15 +17,11 @@ const (
 
 var Profiles = []Profile{Local, Test}
 
-var ActiveProfile Profile
-
 func CheckApplicationProfile() {
-	if len(os.Args) != 2 {
-		fmt.Println("Usage: ./your_app <profile>")
-		os.Exit(1)
-	}
+	profilePtr := flag.String("profile", "", "Specify the application profile.")
+	flag.Parse()
 
-	profile := Profile(os.Args[1])
+	profile := Profile(*profilePtr)
 
 	switch profile {
 	case Local, Test:
@@ -34,7 +31,6 @@ func CheckApplicationProfile() {
 			log.Fatalf("Error loading .env file: %v", err)
 		}
 
-		ActiveProfile = profile
 	default:
 		fmt.Println("Invalid profile. Available profiles: ", Profiles)
 		os.Exit(1)
