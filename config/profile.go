@@ -42,6 +42,6 @@ func CheckApplicationProfile() {
 }
 
 func loadProfileEnvironments(profile Profile) error {
-	envFile := fmt.Sprintf("config/%s.env", profile)
+	envFile := fmt.Sprintf("resources/%s.env", profile)
 	return godotenv.Load(envFile)
 }
